@@ -1,4 +1,4 @@
-package com.example.marvel.presentation.components.details.generics
+package com.example.marvel.presentation.components.generics
 
 enum class MediaType {
     COMICS,

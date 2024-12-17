@@ -1,4 +1,4 @@
-package com.example.marvel.presentation.screens
+package com.example.marvel.presentation.screens.nav
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -10,8 +10,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.marvel.presentation.components.details.CharacterDetails
-import com.example.marvel.presentation.components.list.CharactersList
+import com.example.marvel.presentation.screens.chardetails.CharacterDetails
+import com.example.marvel.presentation.screens.characters.CharactersList
+import com.example.marvel.presentation.screens.characters.CharactersViewModel
 
 @Composable
 fun CharactersApp(

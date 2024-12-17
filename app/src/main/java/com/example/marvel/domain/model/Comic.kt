@@ -1,6 +1,6 @@
 package com.example.marvel.domain.model
 
-import com.example.marvel.presentation.components.details.generics.MediaItem
+import com.example.marvel.presentation.components.generics.MediaItem
 
 data class Comic(
     val available: Int,

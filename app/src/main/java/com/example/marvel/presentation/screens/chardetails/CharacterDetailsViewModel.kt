@@ -1,12 +1,12 @@
-package com.example.marvel.presentation.components.details
+package com.example.marvel.presentation.screens.chardetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marvel.domain.model.BaseResult
 import com.example.marvel.domain.usecase.GetMediaImageUseCase
-import com.example.marvel.presentation.components.details.generics.MediaDetails
-import com.example.marvel.presentation.components.details.generics.MediaItem
-import com.example.marvel.presentation.components.details.generics.MediaType
+import com.example.marvel.presentation.components.generics.MediaDetails
+import com.example.marvel.presentation.components.generics.MediaItem
+import com.example.marvel.presentation.components.generics.MediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

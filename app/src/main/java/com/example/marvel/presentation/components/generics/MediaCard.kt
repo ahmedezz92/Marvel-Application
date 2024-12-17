@@ -1,4 +1,4 @@
-package com.example.marvel.presentation.components.details.generics
+package com.example.marvel.presentation.components.generics
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

@@ -1,4 +1,4 @@
-package com.example.marvel.presentation.components.list
+package com.example.marvel.presentation.screens.characters
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,8 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.marvel.presentation.components.SearchBar
+import com.example.marvel.presentation.components.list.CharacterItem
 import com.example.marvel.presentation.components.states.LoadingState
-import com.example.marvel.presentation.screens.CharactersViewModel
 
 @Composable
 fun CharactersList(charactersViewModel: CharactersViewModel, navController: NavHostController) {

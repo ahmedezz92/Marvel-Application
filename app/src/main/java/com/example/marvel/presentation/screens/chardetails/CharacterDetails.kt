@@ -1,4 +1,4 @@
-package com.example.marvel.presentation.components.details
+package com.example.marvel.presentation.screens.chardetails
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,9 +22,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.marvel.presentation.components.details.generics.MediaSection
-import com.example.marvel.presentation.components.details.generics.MediaType
-import com.example.marvel.presentation.screens.CharactersViewModel
+import com.example.marvel.presentation.components.generics.MediaSection
+import com.example.marvel.presentation.components.generics.MediaType
+import com.example.marvel.presentation.screens.characters.CharactersViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

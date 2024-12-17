@@ -1,4 +1,4 @@
-package com.example.marvel.presentation.screens
+package com.example.marvel.presentation.screens.characters
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

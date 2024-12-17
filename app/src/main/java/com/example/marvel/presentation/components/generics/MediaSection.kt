@@ -1,4 +1,4 @@
-package com.example.marvel.presentation.components.details.generics
+package com.example.marvel.presentation.components.generics
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +34,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.marvel.domain.model.Thumbnail
-import com.example.marvel.presentation.components.details.CharacterDetailsViewModel
+import com.example.marvel.presentation.screens.chardetails.CharacterDetailsViewModel
 
 @Composable
 fun MediaSection(
