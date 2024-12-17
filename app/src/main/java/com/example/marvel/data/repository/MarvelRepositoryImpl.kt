@@ -6,7 +6,7 @@ import com.example.marvel.data.datasource.remote.MarvelApi
 import com.example.marvel.data.model.CharactersResponse
 import com.example.marvel.domain.model.BaseResult
 import com.example.marvel.domain.repository.MarvelRepository
-import com.example.marvelapp.domain.utils.Constants
+import com.example.marvel.domain.utils.Constants
 import com.example.marvel.domain.utils.md5
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -41,7 +41,7 @@ class MarvelRepositoryImpl @Inject constructor(
                 val type = object : TypeToken<WrappedErrorResponse>() {}.type
                 val errorResponse: WrappedErrorResponse =
                     Gson().fromJson(errorBody, type)
-                emit(BaseResult.ErrorState(errorResponse.errorResponse))
+                emit(BaseResult.ErrorState(errorResponse))
             }
         }
     }
@@ -66,7 +66,7 @@ class MarvelRepositoryImpl @Inject constructor(
                 val type = object : TypeToken<WrappedErrorResponse>() {}.type
                 val errorResponse: WrappedErrorResponse =
                     Gson().fromJson(errorBody, type)
-                emit(BaseResult.ErrorState(errorResponse.errorResponse))
+                emit(BaseResult.ErrorState(errorResponse))
             }
         }
     }

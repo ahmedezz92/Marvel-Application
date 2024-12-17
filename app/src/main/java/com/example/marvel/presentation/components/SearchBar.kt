@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.marvel.R
@@ -44,10 +45,11 @@ fun SearchBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .background(Color(0xFF2B2B2B)),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
+        horizontalArrangement = Arrangement.SpaceBetween,
+
+        ) {
         OutlinedTextField(
             value = marvelName,
             onValueChange = {
@@ -59,11 +61,13 @@ fun SearchBar(
                     isFocused = true
                 }
             },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 8.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF2B2B2B),
-                unfocusedBorderColor = Color(0xFFECECEC),
-                cursorColor = Color(0xFF2B2B2B)
+                unfocusedBorderColor = Color(0xFF2B2B2B),
+                cursorColor = Color(0xFFECECEC)
             ),
             shape = RoundedCornerShape(16.dp),
             singleLine = true,
@@ -71,10 +75,11 @@ fun SearchBar(
                 Text(
                     text = stringResource(id = R.string.hint_enter_name),
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color(0xFF9E9E9E)
+                        color = Color.White
                     )
                 )
             },
+            textStyle = TextStyle(Color.White),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = {

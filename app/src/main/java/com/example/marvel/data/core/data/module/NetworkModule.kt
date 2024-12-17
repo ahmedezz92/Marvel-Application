@@ -1,7 +1,7 @@
 package com.example.marvel.data.core.data.module
 
 import com.example.marvel.data.core.data.utils.RequestInterceptor
-import com.example.marvelapp.domain.utils.Constants.URL.URL_BASE
+import com.example.marvel.domain.utils.Constants.URL.URL_BASE
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

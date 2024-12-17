@@ -1,5 +1,6 @@
 package com.example.marvel.presentation.screens.characters
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,15 +19,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.marvel.presentation.components.SearchBar
 import com.example.marvel.presentation.components.list.CharacterItem
+import com.example.marvel.presentation.components.states.ErrorState
 import com.example.marvel.presentation.components.states.LoadingState
 
 @Composable
 fun CharactersList(charactersViewModel: CharactersViewModel, navController: NavHostController) {
 
-    val isLoading by charactersViewModel.isLoading.collectAsState()
     val charactersList by charactersViewModel.characterList.collectAsState()
     val searchQuery by charactersViewModel.searchQuery.collectAsState()
     val totalCharacters by charactersViewModel.totalCharacters.collectAsState()
+    val currentState by charactersViewModel.state.collectAsState()
 
     val listState = rememberLazyListState()
     val isAtEnd = remember {
@@ -52,24 +54,64 @@ fun CharactersList(charactersViewModel: CharactersViewModel, navController: NavH
                 if (searchQuery != name) {
                     charactersViewModel.searchCharacters(name)
                 }
-            }, modifier = Modifier.padding(bottom = 16.dp)
+            }, modifier = Modifier.padding()
 
         )
-        LazyColumn(
-            modifier = Modifier.padding(),
-            state = listState
-        ) {
-            items(charactersList) { character ->
-                CharacterItem(character = character,
-                    onCharacterClick = { characterId ->
-                        navController.navigate("charDetails/$characterId")
-                    })
+        when (val state = currentState) {
+            is GetCharacterState.IsLoading -> {
+                LoadingState()
             }
-            if (isLoading || charactersList.size < totalCharacters) {
-                item {
-                    LoadingState()
+
+            is GetCharacterState.Error -> {
+                ErrorState(error = state.message)
+            }
+
+            is GetCharacterState.Success,GetCharacterState.IsPaginating -> {
+                LazyColumn(
+                    modifier = Modifier.padding(),
+                    state = listState
+                ) {
+                    items(charactersList) { character ->
+                        CharacterItem(character = character,
+                            onCharacterClick = { characterId ->
+                                navController.navigate("charDetails/$characterId")
+                            })
+                    }
+                    if (currentState is GetCharacterState.IsPaginating && charactersList.size < totalCharacters) {
+                        item {
+                            LoadingState()
+                        }
+                    }
                 }
             }
+         /*   is GetCharacterState.IsPaginating -> {
+                LazyColumn(
+                    modifier = Modifier.padding(),
+                    state = listState
+                ) {
+                    items(charactersList) { character ->
+                        CharacterItem(
+                            character = character,
+                            onCharacterClick = { characterId ->
+                                navController.navigate("charDetails/$characterId")
+                            }
+                        )
+                    }
+
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingState()
+                        }
+                    }
+                }
+            }
+*/
+            else -> {}
         }
     }
 }

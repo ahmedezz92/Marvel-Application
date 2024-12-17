@@ -9,10 +9,10 @@ data class WrappedResponse<T>(
 )
 
 data class WrappedErrorResponse(
-    @SerializedName("error") var errorResponse: ErrorResponse,
+    var code: String,
+    var message: String,
 )
 
 data class ErrorResponse(
-    val code: Int,
     val message: String
 )

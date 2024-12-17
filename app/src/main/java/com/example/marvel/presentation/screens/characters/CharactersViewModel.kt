@@ -3,7 +3,6 @@ package com.example.marvel.presentation.screens.characters
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marvel.data.core.data.utils.ErrorResponse
-import com.example.marvel.data.model.CharactersResponse
 import com.example.marvel.domain.model.BaseResult
 import com.example.marvel.domain.model.Character
 import com.example.marvel.domain.usecase.GetCharactersListUseCase
@@ -22,7 +21,7 @@ class CharactersViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state =
-        MutableStateFlow<GetCharacterState>(GetCharacterState.IsLoading)
+        MutableStateFlow<GetCharacterState>(GetCharacterState.Init)
     val state: StateFlow<GetCharacterState> =
         _state.asStateFlow()
 
@@ -32,14 +31,6 @@ class CharactersViewModel @Inject constructor(
 
     private var currentPage = 0
     private val pageSize = 20
-
-    /*loading progress for loading state*/
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-    /*error state*/
-    private val _errorResponse = MutableStateFlow<ErrorResponse?>(null)
-    val errorResponse: StateFlow<ErrorResponse?> = _errorResponse
 
     private val _searchQuery = MutableStateFlow<String?>(null)
     val searchQuery: StateFlow<String?> = _searchQuery.asStateFlow()
@@ -59,16 +50,18 @@ class CharactersViewModel @Inject constructor(
                 name = _searchQuery.value
             )
                 .onStart {
-                    setLoading()
+                    _state.value = if (currentPage == 0)
+                        GetCharacterState.IsLoading
+                    else
+                        GetCharacterState.IsPaginating
                 }
                 .catch {
-                    hideLoading()
+                    _state.value = GetCharacterState.Error(it.message!!)
                 }
                 .collect { result ->
-                    hideLoading()
                     when (result) {
                         is BaseResult.ErrorState -> {
-                            _errorResponse.value = result.errorResponse
+                            _state.value = GetCharacterState.Error(result.errorResponse.message)
                         }
 
                         is BaseResult.DataState -> {
@@ -77,6 +70,7 @@ class CharactersViewModel @Inject constructor(
                             }
                             result.items?.data?.results?.let { newResults ->
                                 val updatedList = _characterList.value + newResults
+                                _state.value = GetCharacterState.Success(updatedList)
                                 _characterList.value = updatedList
                                 currentPage++
                             }
@@ -97,16 +91,9 @@ class CharactersViewModel @Inject constructor(
 
     private fun resetList() {
         _characterList.value = emptyList()
+        _state.value = GetCharacterState.Init
         currentPage = 0
         _totalCharacters.value = 0
-    }
-
-    private fun setLoading() {
-        _isLoading.value = true
-    }
-
-    private fun hideLoading() {
-        _isLoading.value = false
     }
 
     fun getCharacterById(characterId: Int): Character? {
@@ -115,7 +102,11 @@ class CharactersViewModel @Inject constructor(
 }
 
 sealed class GetCharacterState {
+    object Init : GetCharacterState()
     object IsLoading : GetCharacterState()
-    data class Success(val data: CharactersResponse) : GetCharacterState()
-    data class Error(val errorResponse: ErrorResponse) : GetCharacterState()
+
+    object IsPaginating : GetCharacterState()
+
+    data class Success(val data: List<Character>) : GetCharacterState()
+    data class Error(val message: String) : GetCharacterState()
 }
