@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.marvel.presentation.components.SearchBar
 import com.example.marvel.presentation.components.list.CharacterItem
@@ -51,7 +52,8 @@ fun CharactersList(charactersViewModel: CharactersViewModel, navController: NavH
                 if (searchQuery != name) {
                     charactersViewModel.searchCharacters(name)
                 }
-            }
+            }, modifier = Modifier.padding(bottom = 16.dp)
+
         )
         LazyColumn(
             modifier = Modifier.padding(),
