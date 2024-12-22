@@ -1,6 +1,5 @@
 package com.example.marvel.presentation.screens.characters
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,9 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.marvel.presentation.components.SearchBar
+import com.example.marvel.presentation.components.connection.NoInternetConnection
 import com.example.marvel.presentation.components.list.CharacterItem
 import com.example.marvel.presentation.components.states.ErrorState
 import com.example.marvel.presentation.components.states.LoadingState
@@ -29,6 +28,7 @@ fun CharactersList(charactersViewModel: CharactersViewModel, navController: NavH
     val searchQuery by charactersViewModel.searchQuery.collectAsState()
     val totalCharacters by charactersViewModel.totalCharacters.collectAsState()
     val currentState by charactersViewModel.state.collectAsState()
+    val isNetworkAvailable by charactersViewModel.isNetworkAvailable.collectAsState()
 
     val listState = rememberLazyListState()
     val isAtEnd = remember {
@@ -43,75 +43,84 @@ fun CharactersList(charactersViewModel: CharactersViewModel, navController: NavH
             charactersViewModel.getCharactersList()
         }
     }
-    Column(
-        modifier = Modifier
-            .padding()
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        SearchBar(
-            onSearch = { name ->
-                if (searchQuery != name) {
-                    charactersViewModel.searchCharacters(name)
-                }
-            }, modifier = Modifier.padding()
 
+    if (!isNetworkAvailable && charactersList.isEmpty()) {
+        NoInternetConnection(
+            onRetry = {
+                charactersViewModel.getCharactersList()
+            }
         )
-        when (val state = currentState) {
-            is GetCharacterState.IsLoading -> {
-                LoadingState()
-            }
-
-            is GetCharacterState.Error -> {
-                ErrorState(error = state.message)
-            }
-
-            is GetCharacterState.Success,GetCharacterState.IsPaginating -> {
-                LazyColumn(
-                    modifier = Modifier.padding(),
-                    state = listState
-                ) {
-                    items(charactersList) { character ->
-                        CharacterItem(character = character,
-                            onCharacterClick = { characterId ->
-                                navController.navigate("charDetails/$characterId")
-                            })
+    } else {
+        Column(
+            modifier = Modifier
+                .padding()
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            SearchBar(
+                onSearch = { name ->
+                    if (searchQuery != name) {
+                        charactersViewModel.searchCharacters(name)
                     }
-                    if (currentState is GetCharacterState.IsPaginating && charactersList.size < totalCharacters) {
-                        item {
-                            LoadingState()
-                        }
-                    }
+                }, modifier = Modifier.padding()
+
+            )
+            when (val state = currentState) {
+                is GetCharacterState.IsLoading -> {
+                    LoadingState()
                 }
-            }
-         /*   is GetCharacterState.IsPaginating -> {
-                LazyColumn(
-                    modifier = Modifier.padding(),
-                    state = listState
-                ) {
-                    items(charactersList) { character ->
-                        CharacterItem(
-                            character = character,
-                            onCharacterClick = { characterId ->
-                                navController.navigate("charDetails/$characterId")
+
+                is GetCharacterState.Error -> {
+                    ErrorState(error = state.message)
+                }
+
+                is GetCharacterState.Success, GetCharacterState.IsPaginating -> {
+                    LazyColumn(
+                        modifier = Modifier.padding(),
+                        state = listState
+                    ) {
+                        items(charactersList) { character ->
+                            CharacterItem(character = character,
+                                onCharacterClick = { characterId ->
+                                    navController.navigate("charDetails/$characterId")
+                                })
+                        }
+                        if (currentState is GetCharacterState.IsPaginating && charactersList.size < totalCharacters) {
+                            item {
+                                LoadingState()
                             }
-                        )
-                    }
-
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            LoadingState()
                         }
                     }
                 }
+                /*   is GetCharacterState.IsPaginating -> {
+                       LazyColumn(
+                           modifier = Modifier.padding(),
+                           state = listState
+                       ) {
+                           items(charactersList) { character ->
+                               CharacterItem(
+                                   character = character,
+                                   onCharacterClick = { characterId ->
+                                       navController.navigate("charDetails/$characterId")
+                                   }
+                               )
+                           }
+
+                           item {
+                               Box(
+                                   modifier = Modifier
+                                       .fillMaxWidth()
+                                       .padding(16.dp),
+                                   contentAlignment = Alignment.Center
+                               ) {
+                                   LoadingState()
+                               }
+                           }
+                       }
+                   }
+       */
+                else -> {}
             }
-*/
-            else -> {}
         }
     }
 }

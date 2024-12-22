@@ -46,12 +46,6 @@ g
 build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
 C
 settings.gradle.kts,7\4\749edfcc96398253e5b3416184e95c46621da850
-‰
-Yapp/src/main/java/com/example/marvel/presentation/screens/chardetails/CharacterDetails.kt,1\5\150e5fa7d8846ebdf575d3ed5556a0e2fa1b3220
-’
-bapp/src/main/java/com/example/marvel/presentation/screens/chardetails/CharacterDetailsViewModel.kt,2\a\2a15b7390dfa590b1971354cb57b8c29c0e320e1
-~
-Napp/src/main/java/com/example/marvel/presentation/screens/nav/CharactersApp.kt,6\0\6065def81375c3c5e2cd67b79fcfb193d4b1feb1
 j
 :app/src/main/java/com/example/marvel/domain/model/Comic.kt,2\b\2ba78fa66f4c3c6ab478a583e736efebe711e9dc
 k
@@ -62,8 +56,6 @@ Aapp/src/main/java/com/example/marvel/presentation/MainActivity.kt,b\c\bc5460bb
 Uapp/src/main/java/com/example/marvel/presentation/components/generics/MediaDetails.kt,e\f\efd062259dcbb128aed5b5187ae8c03f6bf67718
 ‚
 Rapp/src/main/java/com/example/marvel/presentation/components/generics/MediaItem.kt,9\d\9df467ab78f4a246994316611268c306b0684684
-…
-Uapp/src/main/java/com/example/marvel/presentation/components/generics/MediaSection.kt,8\7\8707f0753d93a07e928fbc05463f146d0f767ad0
 k
 ;app/src/main/java/com/example/marvel/domain/model/Series.kt,4\c\4c1134028de0d30f7aec0ffe8c61fa50e1211619
 l

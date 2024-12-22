@@ -17,11 +17,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.marvel.presentation.components.connection.NoInternetConnection
 import com.example.marvel.presentation.components.generics.MediaSection
 import com.example.marvel.presentation.components.generics.MediaType
 import com.example.marvel.presentation.screens.characters.CharactersViewModel
@@ -34,6 +37,8 @@ fun CharacterDetails(
     navController: NavController
 ) {
     val character = charactersViewModel.getCharacterById(characterId)
+    val isNetworkAvailable by charactersViewModel.isNetworkAvailable.collectAsState()
+
     character?.let {
         Scaffold(topBar = {
             TopAppBar(title = { }, navigationIcon = {
@@ -74,30 +79,36 @@ fun CharacterDetails(
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(vertical = 8.dp)
                         )
-                    if (character.comics.items.isNotEmpty())
-                        MediaSection(
-                            title = "Comics",
-                            items = character.comics.items,
-                            mediaType = MediaType.COMICS
+                    if (!isNetworkAvailable) {
+                        NoInternetConnection(
+                            onRetry = null
                         )
-                    if (character.series.items.isNotEmpty())
-                        MediaSection(
-                            title = "Series",
-                            items = character.series.items,
-                            mediaType = MediaType.SERIES
-                        )
-                    if (character.events.items.isNotEmpty())
-                        MediaSection(
-                            title = "Events",
-                            items = character.events.items,
-                            mediaType = MediaType.EVENTS
-                        )
-                    if (character.stories.items.isNotEmpty())
-                        MediaSection(
-                            title = "Stories",
-                            items = character.stories.items,
-                            mediaType = MediaType.STORIES
-                        )
+                    } else {
+                        if (character.comics.items.isNotEmpty())
+                            MediaSection(
+                                title = "Comics",
+                                items = character.comics.items,
+                                mediaType = MediaType.COMICS
+                            )
+                        if (character.series.items.isNotEmpty())
+                            MediaSection(
+                                title = "Series",
+                                items = character.series.items,
+                                mediaType = MediaType.SERIES
+                            )
+                        if (character.events.items.isNotEmpty())
+                            MediaSection(
+                                title = "Events",
+                                items = character.events.items,
+                                mediaType = MediaType.EVENTS
+                            )
+                        if (character.stories.items.isNotEmpty())
+                            MediaSection(
+                                title = "Stories",
+                                items = character.stories.items,
+                                mediaType = MediaType.STORIES
+                            )
+                    }
                 }
             }
         }

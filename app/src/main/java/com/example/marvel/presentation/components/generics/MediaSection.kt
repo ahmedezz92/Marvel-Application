@@ -34,6 +34,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.marvel.domain.model.Thumbnail
+import com.example.marvel.presentation.components.connection.NoInternetConnection
 import com.example.marvel.presentation.screens.chardetails.CharacterDetailsViewModel
 
 @Composable
@@ -46,12 +47,20 @@ fun MediaSection(
     var selectedMedia by remember { mutableStateOf<Pair<String, Thumbnail>?>(null) }
     val mediaState by viewModel.mediaState.collectAsState()
     val loadingStates by viewModel.loadingStates.collectAsState()
-
+//    val isNetworkAvailable by viewModel.isNetworkAvailable.collectAsState()
     // Debug print
     val defaultThumbnail = Thumbnail(
         path = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
         extension = "jpg"
     )
+
+//    if (!isNetworkAvailable) {
+//        NoInternetConnection(
+//            onRetry = {
+//                viewModel.loadMediaItems(items, mediaType)
+//            }
+//        )
+//    } else {
     LaunchedEffect(items) {
         viewModel.loadMediaItems(items, mediaType)
     }
@@ -197,4 +206,4 @@ fun MediaSection(
         }
     }
 }
-
+//}

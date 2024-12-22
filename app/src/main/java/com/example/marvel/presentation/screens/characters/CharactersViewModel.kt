@@ -6,6 +6,7 @@ import com.example.marvel.data.core.data.utils.ErrorResponse
 import com.example.marvel.domain.model.BaseResult
 import com.example.marvel.domain.model.Character
 import com.example.marvel.domain.usecase.GetCharactersListUseCase
+import com.example.marvel.domain.utils.NetworkUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharactersViewModel @Inject constructor(
-    private val getCharactersListUseCase: GetCharactersListUseCase
+    private val getCharactersListUseCase: GetCharactersListUseCase,
+    private val networkUtils: NetworkUtils
 ) : ViewModel() {
 
     private val _state =
@@ -27,6 +29,9 @@ class CharactersViewModel @Inject constructor(
 
     private val _characterList = MutableStateFlow<List<Character>>(emptyList())
     val characterList: StateFlow<List<Character>> = _characterList
+
+    private val _isNetworkAvailable = MutableStateFlow(true)
+    val isNetworkAvailable: StateFlow<Boolean> = _isNetworkAvailable.asStateFlow()
 
 
     private var currentPage = 0
@@ -40,10 +45,17 @@ class CharactersViewModel @Inject constructor(
 
 
     init {
+        _isNetworkAvailable.value = networkUtils.isNetworkAvailable()
         getCharactersList()
     }
 
     fun getCharactersList() {
+        if (!networkUtils.isNetworkAvailable()) {
+            _isNetworkAvailable.value = false
+            return
+        }
+        _isNetworkAvailable.value = true
+
         viewModelScope.launch {
             getCharactersListUseCase.execute(
                 offset = currentPage * pageSize, limit = pageSize,
@@ -90,6 +102,11 @@ class CharactersViewModel @Inject constructor(
     }
 
     private fun resetList() {
+        if (!networkUtils.isNetworkAvailable()) {
+            _isNetworkAvailable.value = false
+            return
+        }
+        _isNetworkAvailable.value = true
         _characterList.value = emptyList()
         _state.value = GetCharacterState.Init
         currentPage = 0
@@ -97,6 +114,7 @@ class CharactersViewModel @Inject constructor(
     }
 
     fun getCharacterById(characterId: Int): Character? {
+        _isNetworkAvailable.value = networkUtils.isNetworkAvailable()
         return _characterList.value.find { it.id == characterId }
     }
 }

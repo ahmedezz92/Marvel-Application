@@ -33,6 +33,7 @@ class CharacterDetailsViewModel @Inject constructor(
     }
 
     fun <T : MediaItem> loadMediaItems(items: List<T>, mediaType: MediaType) {
+
         viewModelScope.launch {
             val mediaDetails = mutableListOf<MediaDetails>()
             setLoading(mediaType)
