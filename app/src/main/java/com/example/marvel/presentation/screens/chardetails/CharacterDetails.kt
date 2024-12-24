@@ -1,35 +1,40 @@
 package com.example.marvel.presentation.screens.chardetails
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.marvel.R
 import com.example.marvel.presentation.components.connection.NoInternetConnection
 import com.example.marvel.presentation.components.generics.MediaSection
 import com.example.marvel.presentation.components.generics.MediaType
 import com.example.marvel.presentation.screens.characters.CharactersViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterDetails(
     charactersViewModel: CharactersViewModel,
@@ -40,76 +45,111 @@ fun CharacterDetails(
     val isNetworkAvailable by charactersViewModel.isNetworkAvailable.collectAsState()
 
     character?.let {
-        Scaffold(topBar = {
-            TopAppBar(title = { }, navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
-                }
-            })
-        }) { paddingValues ->
+        Scaffold { paddingValues ->
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .padding(paddingValues)
                     .fillMaxSize()
+                    .background(color = colorResource(id = R.color.color_bg))
             ) {
-                val imageURL =
-                    character.thumbnail.path.plus(".".plus(character.thumbnail.extension))
-
-                AsyncImage(
-                    model = imageURL,
-                    contentDescription = "Marvel banner",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(400.dp),
-                    contentScale = ContentScale.Crop
-                )
-                Column(
-                    modifier = Modifier.padding(10.dp)
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(400.dp)
                 ) {
-                    character.name?.let { it1 ->
-                        Text(
-                            text = it1,
-                            style = MaterialTheme.typography.headlineMedium
+                    val imageURL = character.thumbnail.path.plus(".".plus(character.thumbnail.extension))
+                    AsyncImage(
+                        model = imageURL,
+                        contentDescription = "Marvel banner",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                    IconButton(
+                        onClick = { navController.popBackStack() },
+                        modifier = Modifier
+                            .padding(6.dp)
+//                            .background(
+//                                color = Color.Black.copy(alpha = 0.5f),
+//                                shape = CircleShape
+//                            )
+                    ) {
+                        Icon(
+                            Icons.Filled.KeyboardArrowLeft,
+                            modifier = Modifier
+                                .width(50.dp)
+                                .height(50.dp),
+                            contentDescription = "Back",
+                            tint = Color.White
                         )
                     }
-                    if (character.description.isNotEmpty())
+                }
+
+                Column(
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    character.name?.let {
+                        Text(
+                            text = stringResource(id = R.string.label_name),
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Red,
+                            modifier = Modifier.padding(4.dp)
+                        )
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White,
+                            modifier = Modifier.padding(4.dp)
+                        )
+                    }
+                    if (character.description.isNotEmpty()) {
+                        Text(
+                            text = stringResource(id = R.string.label_description),
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Red,
+                            modifier = Modifier.padding(4.dp)
+                            )
                         Text(
                             text = character.description,
                             style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(vertical = 8.dp)
+                            color = Color.White,
+                            modifier = Modifier.padding(4.dp)
                         )
+                    }
                     if (!isNetworkAvailable) {
                         NoInternetConnection(
                             onRetry = null
                         )
-                    } else {
+                    }
+                    else {
                         if (character.comics.items.isNotEmpty())
                             MediaSection(
-                                title = "Comics",
+                                title = stringResource(id = R.string.label_comics),
                                 items = character.comics.items,
                                 mediaType = MediaType.COMICS
                             )
                         if (character.series.items.isNotEmpty())
                             MediaSection(
-                                title = "Series",
+                                title = stringResource(id = R.string.label_series),
                                 items = character.series.items,
                                 mediaType = MediaType.SERIES
                             )
-                        if (character.events.items.isNotEmpty())
-                            MediaSection(
-                                title = "Events",
-                                items = character.events.items,
-                                mediaType = MediaType.EVENTS
-                            )
                         if (character.stories.items.isNotEmpty())
                             MediaSection(
-                                title = "Stories",
+                                title = stringResource(id = R.string.label_stories),
                                 items = character.stories.items,
                                 mediaType = MediaType.STORIES
                             )
+                        if (character.events.items.isNotEmpty())
+                            MediaSection(
+                                title = stringResource(id = R.string.label_events),
+                                items = character.events.items,
+                                mediaType = MediaType.EVENTS
+                            )
                     }
                 }
+
             }
         }
     }

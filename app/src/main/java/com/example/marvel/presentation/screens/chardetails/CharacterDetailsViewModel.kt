@@ -59,7 +59,7 @@ class CharacterDetailsViewModel @Inject constructor(
 
                                 is BaseResult.ErrorState -> {
                                     hideLoading(mediaType)
-                                } // Handle error
+                                }
                             }
                         }
                 }

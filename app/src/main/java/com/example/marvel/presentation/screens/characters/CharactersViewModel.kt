@@ -33,6 +33,8 @@ class CharactersViewModel @Inject constructor(
     private val _isNetworkAvailable = MutableStateFlow(true)
     val isNetworkAvailable: StateFlow<Boolean> = _isNetworkAvailable.asStateFlow()
 
+    private val _isQueriedBefore = MutableStateFlow(false)
+    val isQueriedBefore: StateFlow<Boolean> = _isQueriedBefore.asStateFlow()
 
     private var currentPage = 0
     private val pageSize = 20
@@ -43,19 +45,15 @@ class CharactersViewModel @Inject constructor(
     private var _totalCharacters = MutableStateFlow(0)
     val totalCharacters: StateFlow<Int> = _totalCharacters.asStateFlow()
 
-
     init {
         _isNetworkAvailable.value = networkUtils.isNetworkAvailable()
         getCharactersList()
     }
 
     fun getCharactersList() {
-        if (!networkUtils.isNetworkAvailable()) {
-            _isNetworkAvailable.value = false
+        if (!_isNetworkAvailable.value) {
             return
         }
-        _isNetworkAvailable.value = true
-
         viewModelScope.launch {
             getCharactersListUseCase.execute(
                 offset = currentPage * pageSize, limit = pageSize,
@@ -78,14 +76,24 @@ class CharactersViewModel @Inject constructor(
 
                         is BaseResult.DataState -> {
                             result.items?.data?.total?.let { total ->
-                                _totalCharacters.value = total
+                                if (total == 0)
+                                    _state.value = GetCharacterState.Empty
+                                else {
+                                    _totalCharacters.value = total
+                                    result.items.data.results.let { newResults ->
+                                        val updatedList = _characterList.value + newResults
+                                        _state.value = GetCharacterState.Success(updatedList)
+                                        _characterList.value = updatedList
+                                        currentPage++
+                                    }
+                                }
                             }
-                            result.items?.data?.results?.let { newResults ->
-                                val updatedList = _characterList.value + newResults
-                                _state.value = GetCharacterState.Success(updatedList)
-                                _characterList.value = updatedList
-                                currentPage++
-                            }
+//                            result.items?.data?.total?.let { total ->
+//                                _totalCharacters.value = total
+//                            }
+//                            result.items?.data?.results?.let { newResults ->
+//
+//                            }
                         }
                     }
                 }
@@ -94,14 +102,17 @@ class CharactersViewModel @Inject constructor(
 
     fun searchCharacters(query: String?) {
         resetList()
-        if (query.isNullOrEmpty())
+        if (query.isNullOrEmpty()) {
             _searchQuery.value = null
-        else
+            _isQueriedBefore.value = false
+        } else {
             _searchQuery.value = query
+            _isQueriedBefore.value = true
+        }
         getCharactersList()
     }
 
-    private fun resetList() {
+    fun resetList() {
         if (!networkUtils.isNetworkAvailable()) {
             _isNetworkAvailable.value = false
             return
@@ -127,4 +138,5 @@ sealed class GetCharacterState {
 
     data class Success(val data: List<Character>) : GetCharacterState()
     data class Error(val message: String) : GetCharacterState()
+    object Empty : GetCharacterState()
 }

@@ -24,12 +24,8 @@ e
 Oapp/src/main/java/com/example/marvel/data/core/data/utils/RequestInterceptor.kt,2\e\2e88d1537ee757708b7026a1aa2d1a3e3b129fd5
 x
 Happ/src/main/java/com/example/marvel/data/datasource/remote/MarvelApi.kt,5\5\551a3f9899003ce67d13680692b7e6c092a1a89e
-u
-Eapp/src/main/java/com/example/marvel/data/model/CharactersResponse.kt,7\b\7bce1551922f8a43ac6d2747e4d913bd288b2238
 d
 4app/src/main/java/com/example/marvel/di/AppModule.kt,a\8\a831e64de4219db3e1b53f4b30ac8203023d66e7
-n
->app/src/main/java/com/example/marvel/domain/model/Character.kt,d\c\dc51fc3fc9cefff3f71b58ee89f9e8f5c175ab83
 n
 >app/src/main/java/com/example/marvel/domain/model/Thumbnail.kt,0\e\0ea85fc4a701c55c6aa50151530d549332d11c89
 z
@@ -52,8 +48,6 @@ k
 ;app/src/main/java/com/example/marvel/domain/model/Events.kt,e\a\ea3e778dcc5acd7e01d3748c89e47a34abd5afba
 q
 Aapp/src/main/java/com/example/marvel/presentation/MainActivity.kt,b\c\bc5460bb0b057274b513b1bfaa8e16d102125de2
-…
-Uapp/src/main/java/com/example/marvel/presentation/components/generics/MediaDetails.kt,e\f\efd062259dcbb128aed5b5187ae8c03f6bf67718
 ‚
 Rapp/src/main/java/com/example/marvel/presentation/components/generics/MediaItem.kt,9\d\9df467ab78f4a246994316611268c306b0684684
 k
@@ -62,11 +56,7 @@ l
 <app/src/main/java/com/example/marvel/domain/model/Stories.kt,a\a\aa976410c334bdc28ed4ec9b109fe81fdc4921ba
 ‚
 Rapp/src/main/java/com/example/marvel/presentation/components/generics/MediaType.kt,b\3\b370376f1a695d1eb7962600ef3c17d9931e3644
-s
-Capp/src/main/java/com/example/marvel/presentation/ui/theme/Theme.kt,f\c\fcdc0febbce74dbfb75e7f65f1fa8fda8c0977d0
-r
-Bapp/src/main/java/com/example/marvel/presentation/ui/theme/Type.kt,1\f\1f29ca546ae917f26d7bdc81b68c6833bd223755
-s
-Capp/src/main/java/com/example/marvel/presentation/ui/theme/Color.kt,4\b\4b534c49f89217846dd353fd4c0aaa57e798f2e4
-‚
-Rapp/src/main/java/com/example/marvel/presentation/components/list/CharacterItem.kt,5\7\57206e30168cb98ad53f2e2ec03a4fc1425f8647
+
+_app/src/main/java/com/example/marvel/presentation/components/connection/NoInternetConnection.kt,1\1\11e3e9ba36f6f154a5d7b390fdb05a171df0add3
+u
+Eapp/src/main/java/com/example/marvel/data/model/CharactersResponse.kt,7\b\7bce1551922f8a43ac6d2747e4d913bd288b2238

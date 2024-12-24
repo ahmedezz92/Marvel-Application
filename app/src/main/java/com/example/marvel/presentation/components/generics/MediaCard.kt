@@ -17,10 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.example.marvel.domain.model.Thumbnail
+import com.example.marvel.presentation.components.states.LoadingState
 
 @Composable
 fun MediaCard(
@@ -33,9 +35,10 @@ fun MediaCard(
     Card(
         modifier = modifier
             .width(120.dp)
-            .padding(end = 8.dp)
-            .clickable(onClick = onPreviewClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            .clickable(onClick = onPreviewClick)
+            .padding(end = 5.dp),
+//        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Column {
 //            AsyncImage(
@@ -51,9 +54,9 @@ fun MediaCard(
                 model = imageURL,
                 contentDescription = "Media cover",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp),
-                contentScale = ContentScale.Crop,
+                    .width(120.dp)
+                    .height(160.dp),
+                contentScale = ContentScale.FillBounds,
                 loading = {
                     Box(
                         modifier = Modifier
@@ -61,10 +64,7 @@ fun MediaCard(
                             .height(120.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator(
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(16.dp)
-                        )
+                        LoadingState()
                     }
                 },
                 error = {
@@ -86,14 +86,17 @@ fun MediaCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
-                    .padding(4.dp)
+                    .padding(5.dp)
             ) {
                 Text(
                     text = name,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.labelSmall,
                     maxLines = 2,
+                    color = Color.White,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.align(Alignment.TopStart)
+                    modifier = Modifier.align(Alignment.Center),
+                    textAlign = TextAlign.Center
+
                 )
             }
         }

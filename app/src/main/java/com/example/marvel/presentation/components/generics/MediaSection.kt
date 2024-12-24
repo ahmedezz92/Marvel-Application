@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -34,7 +35,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.marvel.domain.model.Thumbnail
-import com.example.marvel.presentation.components.connection.NoInternetConnection
+import com.example.marvel.presentation.components.states.LoadingState
 import com.example.marvel.presentation.screens.chardetails.CharacterDetailsViewModel
 
 @Composable
@@ -47,20 +48,12 @@ fun MediaSection(
     var selectedMedia by remember { mutableStateOf<Pair<String, Thumbnail>?>(null) }
     val mediaState by viewModel.mediaState.collectAsState()
     val loadingStates by viewModel.loadingStates.collectAsState()
-//    val isNetworkAvailable by viewModel.isNetworkAvailable.collectAsState()
     // Debug print
     val defaultThumbnail = Thumbnail(
         path = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
         extension = "jpg"
     )
 
-//    if (!isNetworkAvailable) {
-//        NoInternetConnection(
-//            onRetry = {
-//                viewModel.loadMediaItems(items, mediaType)
-//            }
-//        )
-//    } else {
     LaunchedEffect(items) {
         viewModel.loadMediaItems(items, mediaType)
     }
@@ -72,24 +65,25 @@ fun MediaSection(
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Bold,
+            color = Color.Red,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         when {
-
-//            loadingStates[mediaType] == true -> {
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(200.dp),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    CircularProgressIndicator()
-//                }
-//            }
+            loadingStates[mediaType] == true -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LoadingState()
+                }
+            }
             items.isNotEmpty() -> {
                 LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(1.dp)
                 ) {
                     items(mediaState[mediaType] ?: emptyList()) {
                         val thumbnail = it.thumbnail ?: defaultThumbnail

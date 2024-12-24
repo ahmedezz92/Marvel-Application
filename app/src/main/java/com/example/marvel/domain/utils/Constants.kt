@@ -6,7 +6,7 @@ object Constants {
     }
     object Authorization {
         const val API_KEY_PUBLIC =
-            "1657942745df9833cc91da400b52d872"
-        const val API_KEY_PRIVATE = "bac44bb86af1efc29804a4503e8d33f4dfb8348d"
+            "a45fed0633096cd5ffa48f89bc6e7d39"
+        const val API_KEY_PRIVATE = "bd1b9099e85cf791f1ea92a0ca6071cb1acd0a3a"
     }
 }
